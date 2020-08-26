@@ -24,9 +24,9 @@ app.get("/", (req, res) => {
 
 app.get("/deleteAll", (req, res) => {
     Users.deleteMany({}).then(function(){ 
-        console.log("TODOS OS USUÁRIOS DELETADOS"); // Success 
+        return res.json("TODOS OS USUÁRIOS DELETADOS"); // Success 
     }).catch(function(error){ 
-        console.log(error); // Failure 
+        return res.json(error); // Failure 
     }); 
 });
 
@@ -44,7 +44,7 @@ app.get("/getUsers", (req, res) => {
 app.get('/cad-user', function(req, res){
     new Users({
         nome: "teste",
-        acessoKey: "9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d",
+        accessKey: "9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d",
         isActive: true
     }).save().then(() => {
         res.send("Cadastro realizado com sucesso")
