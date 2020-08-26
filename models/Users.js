@@ -5,8 +5,12 @@ const Users = new mongoose.Schema({
         type: String,
         required: true
     },
-    acessoKey: {
+    accessKey: {
         type: String,
+        required: true
+    },
+    isActive:{
+        type: Boolean,
         required: true
     }
 },
