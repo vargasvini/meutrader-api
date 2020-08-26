@@ -17,7 +17,12 @@ mongoose.connect('mongodb://meutrader_admin:ABh0l13rftw#@mongo_meutrader_db:2701
     console.log("Erro: Conexão com MongoDB não foi realizada com sucesso!");
 });
 
+
 app.get("/", (req, res) => {
+    res.send("BEM VINDO AO MEU TRADER!")
+ });
+
+app.get("/getUsers", (req, res) => {
    Users.find({}).then((users) => {
         return res.json(users);
     }).catch((erro) => {
