@@ -28,6 +28,17 @@ app.get("/", (req, res) => {
     })
 });
 
+app.get('/cad-user', function(req, res){
+    new Users({
+        nome: "teste",
+        acessoKey: "9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d"
+    }).save().then(() => {
+        res.send("Cadastro realizado com sucesso")
+    }).catch((erro) => {
+        res.send("ERRO "+erro)
+    })
+})
+
 app.post("/users", (req, res) => {
     const users = Users.create(req.body, (err) => {
         if (err) return res.status(400).json({

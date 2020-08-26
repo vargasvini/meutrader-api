@@ -5,7 +5,7 @@ const Users = new mongoose.Schema({
         type: String,
         required: true
     },
-    key: {
+    acessoKey: {
         type: String,
         required: true
     }
