@@ -8,8 +8,7 @@ const app = express();
 
 app.use(express.json());
 
-//mongoose.connect('mongodb://meutrader_admin:ABh0l13rftw#@mongo_meutrader_db:27017/meutrader-api', {
-mongoose.connect('mongodb://localhost/meutrader-api', {
+mongoose.connect('mongodb://meutrader_admin:ABh0l13rftw#@mongo_meutrader_db:27017/meutrader-api', {
   useNewUrlParser: true,
   useUnifiedTopology: true
 }).then(() => {
