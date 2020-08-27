@@ -56,6 +56,7 @@ app.get('/cad-user', function(req, res){
 
 app.post("/users", (req, res) => {
     const data = req.body;
+    console.log(data)
     const usersCad = new Users(data);
     console.log(usersCad)
 
