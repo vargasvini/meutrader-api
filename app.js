@@ -54,12 +54,9 @@ app.get('/cad-user', function(req, res){
     })
 })
 
-app.post("/users", (req, res) => {
+app.post("/postUser", (req, res) => {
     const data = req.body;
-    console.log(data)
     const usersCad = new Users(data);
-    console.log(usersCad)
-
     usersCad.save((error) => {
         if(error){
             res.status(500).json({msg: 'NÃO ROLOU'})
@@ -68,24 +65,6 @@ app.post("/users", (req, res) => {
 
         return res.json({msg:"USUÁRIO CADASTRADOOOO"})
     });
-
-    // new Users(req.body).save().then(() => {
-    //     res.send("Cadastro realizado com sucesso VIA POST")
-    // }).catch((erro) => {
-    //     res.send("ERRO "+erro)
-    // })
-
-    // const users = Users.create(req.body, (err) => {
-    //     if (err) return res.status(400).json({
-    //         error: true,
-    //         message: "Error: users não foi cadastrado com sucesso!"
-    //     });
-    
-    //     return res.status(200).json({
-    //         error: false,
-    //         message: "users cadastrado com sucesso!"
-    //     })
-    // });
 });
 
 app.listen(3000, () =>{
