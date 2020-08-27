@@ -66,6 +66,7 @@ app.post("/users", (req, res) => {
     //         message: "users cadastrado com sucesso!"
     //     })
     // });
+    console.log(req.body)
     new Users(req.body).save().then(() => {
         res.send("Cadastro realizado com sucesso VIA POST")
     }).catch((erro) => {
