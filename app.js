@@ -94,6 +94,15 @@ app.post("/postTrades", (req, res) => {
     });
 });
 
+
+app.get("/deleteAllTrades", (req, res) => {
+    Trades.deleteMany({}).then(function(){ 
+        return res.json("TODOS OS TRADES DELETADOS"); // Success 
+    }).catch(function(error){ 
+        return res.json(error); // Failure 
+    }); 
+});
+
 app.listen(3000, () =>{
     console.log("Servidor iniciado na porta 3000: http://localhost:3000/");
 });
