@@ -33,6 +33,10 @@ const Trades = new mongoose.Schema({
         type: String,
         required: true
     },
+    opcao:{
+        type: String,
+        required: true
+    },
     operationId:{
         type: String,
         required: true
