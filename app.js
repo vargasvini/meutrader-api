@@ -1,11 +1,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
 
-require("./models/Users");
-const Users = mongoose.model('users');
+const userModel = require("./models/Users");
+const Users = mongoose.model('users', userModel);
 
-require("./models/Trades");
-const Trades = mongoose.model('trades');
+const tradesModel = require("./models/Trades");
+const Trades = mongoose.model('trades', tradesModel);
 
 const app = express();
 
