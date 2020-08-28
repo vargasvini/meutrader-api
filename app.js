@@ -1,8 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 
-const userModel = require("./models/Users");
-const Users = mongoose.model('users', userModel);
+require("./models/Users");
+const Users = mongoose.model('users');
 
 const tradesModel = require("./models/Trades");
 const Trades = mongoose.model('trades', tradesModel);
@@ -62,10 +62,10 @@ app.post("/postUser", (req, res) => {
     const usersCad = new Users(data);
     usersCad.save((error) => {
         if(error){
+            console.log(error)
             res.status(500).json({msg: 'NÃO ROLOU'})
             return;
         }
-
         return res.json({msg:"USUÁRIO CADASTRADOOOO"})
     });
 });
