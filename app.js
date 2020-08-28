@@ -61,8 +61,7 @@ app.post("/postUser", (req, res) => {
     const data = req.body;
     const usersCad = new Users(data);
     usersCad.save((error) => {
-        if(error){
-            console.log(error)
+        if(error){            
             res.status(500).json({msg: 'NÃO ROLOU'})
             return;
         }
@@ -87,6 +86,7 @@ app.post("/postTrades", (req, res) => {
     const trades = new Trades(data);
     trades.save((error) => {
         if(error){
+            console.log(error)
             res.status(500).json({msg: 'NÃO ROLOU'})
             return;
         }
