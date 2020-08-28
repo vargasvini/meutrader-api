@@ -83,6 +83,7 @@ app.get("/getTrades", (req, res) => {
 
 app.post("/postTrades", (req, res) => {
     const data = req.body;
+    console.log(data)
     const trades = new Trades(data);
     trades.save((error) => {
         if(error){
