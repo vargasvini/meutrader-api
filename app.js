@@ -67,6 +67,29 @@ app.post("/postUser", (req, res) => {
     });
 });
 
+app.get("/getTrades", (req, res) => {
+    Trades.find({}).then((trades) => {
+        return res.json(trades);
+     }).catch((erro) => {
+        return res.status(400).json({
+            error: true,
+            message: "Nenhum trade encontrado!"
+        })
+     })
+ });
+
+app.post("/postTrades", (req, res) => {
+    const data = req.body;
+    const trades = new Trades(data);
+    trades.save((error) => {
+        if(error){
+            res.status(500).json({msg: 'NÃO ROLOU'})
+            return;
+        }
+        return res.json({msg:"TRADE CADASTRADOOOO"})
+    });
+});
+
 app.listen(3000, () =>{
     console.log("Servidor iniciado na porta 3000: http://localhost:3000/");
 });
