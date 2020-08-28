@@ -4,6 +4,9 @@ const mongoose = require('mongoose');
 require("./models/Users");
 const Users = mongoose.model('users');
 
+require("./models/Trades");
+const Trades = mongoose.model('trades');
+
 const app = express();
 
 app.use(express.json());
