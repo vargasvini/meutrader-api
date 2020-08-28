@@ -4,8 +4,8 @@ const mongoose = require('mongoose');
 require("./models/Users");
 const Users = mongoose.model('users');
 
-const tradesModel = require("./models/Trades");
-const Trades = mongoose.model('trades', tradesModel);
+require("./models/Trades");
+const Trades = mongoose.model('trades');
 
 const app = express();
 
