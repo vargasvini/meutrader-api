@@ -10,7 +10,7 @@ const Trades = new mongoose.Schema({
         required: true
     },
     paridade:{
-        type: Boolean,
+        type: String,
         required: true
     },
     valor:{
@@ -29,10 +29,10 @@ const Trades = new mongoose.Schema({
         type: String,
         required: true
     },
-    // data:{
-    //     type: String,
-    //     required: true
-    // },
+    data:{
+        type: String,
+        required: true
+    },
     operationId:{
         type: String,
         required: true
