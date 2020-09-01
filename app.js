@@ -107,21 +107,32 @@ app.get("/getAggregatedTrades", (req, res) => {
         [
             { $group: {
                 _id: {traderId: "$traderId", nome: "$nome"},
-                saldo: { 
-                    "$sum": {"$cond": [{ "$eq": ["$resultado", "WIN"] }, 1, -1]}
-                },
-                qtdWin: {
-                    "$sum": {"$cond": [{ "$eq": ["$resultado", "WIN"] }, 1, 0]}
-                },
-                qtdLoss: {
-                    "$sum": {"$cond": [{ "$eq": ["$resultado", "LOSS"] }, 1, 0]}
-                },
-                saldoValor: {
-                    "$sum": {"$cond": [{ "$eq": ["$resultado", "WIN"] }, "$valor", "-$valor"]}
-                }
+                result: {$push: {
+                    saldo: { 
+                        "$sum": {"$cond": [{ "$eq": ["$resultado", "WIN"] }, 1, -1]}
+                    },
+                    qtdWin: {
+                        "$sum": {"$cond": [{ "$eq": ["$resultado", "WIN"] }, 1, 0]}
+                    },
+                    qtdLoss: {
+                        "$sum": {"$cond": [{ "$eq": ["$resultado", "LOSS"] }, 1, 0]}
+                    },
+                    saldoValor: {
+                        "$sum": {"$cond": [{ "$eq": ["$resultado", "WIN"] }, "$valor", "-$valor"]}
+                    }
+                }}                
             }},
             { $sort : { saldo: -1 } },
-            { $limit: 100 }
+            { $limit: 100 },
+            { $unwind: {path: '$result',  includeArrayIndex: 'rownum'}},
+            { $trade: {
+                saldo: '$result.saldo',
+                qtdWin: '$result.qtdWin',
+                qtdLoss: '$result.qtdLoss',
+                saldoValor: '$result.saldoValor',
+                rownum: 1
+            }}
+
         ]
     ).then((trades) => {
         return res.json(trades);
