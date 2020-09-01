@@ -105,8 +105,7 @@ app.get("/deleteAllTrades", (req, res) => {
 app.get("/getAggregatedTrades", (req, res) => {
     Trades.aggregate(
         [
-            { $sort : { saldo: -1 } },
-            { $limit: 100 },
+
             { $group: {
                 _id: {traderId: "$traderId", nome: "$nome"},
                 trade: {$push: {
@@ -124,6 +123,8 @@ app.get("/getAggregatedTrades", (req, res) => {
                     }
                 }}                
             }},
+            { $sort : { saldo: -1 } },
+            { $limit: 100 },
             { $unwind: {path: '$trade',  includeArrayIndex: 'rank'}},
             { $project: {
                 saldo: '$trade.saldo',
