@@ -106,8 +106,7 @@ app.get("/getAggregatedTrades", (req, res) => {
     Trades.aggregate(
         [
             { $group: {
-                _id: {traderId: "$traderId"},
-                nome: "$nome",
+                _id: {traderId: "$traderId", nome: "$nome"},
                 saldo: { 
                     "$sum": {"$cond": [{ "$eq": ["$resultado", "WIN"] }, 1, -1]}
                 },
