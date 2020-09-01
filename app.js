@@ -124,13 +124,13 @@ app.get("/getAggregatedTrades", (req, res) => {
                     }
                 }}                
             }},
-            { $unwind: {path: '$trade',  includeArrayIndex: 'rownum'}},
+            { $unwind: {path: '$trade',  includeArrayIndex: 'rank'}},
             { $project: {
                 saldo: '$trade.saldo',
                 qtdWin: '$trade.qtdWin',
                 qtdLoss: '$trade.qtdLoss',
                 saldoValor: '$trade.saldoValor',
-                rownum: 1
+                rank: { "$add": [ "$rank", 1 ] }
             }}
         ]
     ).then((trades) => {
