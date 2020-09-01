@@ -105,7 +105,12 @@ app.get("/deleteAllTrades", (req, res) => {
 app.get("/getAggregatedTrades", (req, res) => {
     Trades.aggregate(
         [
-            {$group: {_id: {traderId: "$traderId"}}}
+            { $group: {
+                _id: {traderId: "$traderId"},
+                saldo: { 
+                    "$sum": {"$cond": [{ "$eq": ["$resultado", "WIN"] }, 1, 0]}
+                }
+            }}
         ]
     )
     .then((trades) => {
