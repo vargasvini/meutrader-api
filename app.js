@@ -108,7 +108,16 @@ app.get("/getAggregatedTrades", (req, res) => {
             { $group: {
                 _id: {traderId: "$traderId"},
                 saldo: { 
+                    "$sum": {"$cond": [{ "$eq": ["$resultado", "WIN"] }, 1, -1]}
+                },
+                qtdWin: {
                     "$sum": {"$cond": [{ "$eq": ["$resultado", "WIN"] }, 1, 0]}
+                },
+                qtdLoss: {
+                    "$sum": {"$cond": [{ "$eq": ["$resultado", "LOSS"] }, 1, 0]}
+                },
+                saldoValor: {
+                    "$sum": {"$cond": [{ "$eq": ["$resultado", "WIN"] }, "$valor", "$valor"*-1]}
                 }
             }}
         ]
