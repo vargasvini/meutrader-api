@@ -105,9 +105,11 @@ app.get("/deleteAllTrades", (req, res) => {
 app.get("/getAggregatedTrades", (req, res) => {
     Trades.aggregate(
         [
+            { $sort : { saldo: -1 } },
+            { $limit: 100 },
             { $group: {
                 _id: {traderId: "$traderId", nome: "$nome"},
-                result: {$push: {
+                trade: {$push: {
                     saldo: { 
                         "$sum": {"$cond": [{ "$eq": ["$resultado", "WIN"] }, 1, -1]}
                     },
@@ -122,17 +124,14 @@ app.get("/getAggregatedTrades", (req, res) => {
                     }
                 }}                
             }},
-            { $sort : { saldo: -1 } },
-            { $limit: 100 },
-            { $unwind: {path: '$result',  includeArrayIndex: 'rownum'}},
-            { $trade: {
-                saldo: '$result.saldo',
-                qtdWin: '$result.qtdWin',
-                qtdLoss: '$result.qtdLoss',
-                saldoValor: '$result.saldoValor',
+            { $unwind: {path: '$trade',  includeArrayIndex: 'rownum'}},
+            { $project: {
+                saldo: '$trade.saldo',
+                qtdWin: '$trade.qtdWin',
+                qtdLoss: '$trade.qtdLoss',
+                saldoValor: '$trade.saldoValor',
                 rownum: 1
             }}
-
         ]
     ).then((trades) => {
         return res.json(trades);
