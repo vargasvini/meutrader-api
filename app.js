@@ -102,6 +102,22 @@ app.get("/deleteAllTrades", (req, res) => {
     }); 
 });
 
+app.get("/getAggregatedTrades", (req, res) => {
+    Trades.aggregate(
+        [
+            {$group: {_id: {traderId: "$traderId"}}}
+        ]
+    )
+    .then((trades) => {
+        return res.json(trades);
+     }).catch((erro) => {
+        return res.status(400).json({
+            error: true,
+            message: "Nenhum trade encontrado!"
+        })
+     })
+ });
+
 app.listen(3000, () =>{
     console.log("Servidor iniciado na porta 3000: http://localhost:3000/");
 });
