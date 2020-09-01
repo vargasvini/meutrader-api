@@ -119,7 +119,8 @@ app.get("/getAggregatedTrades", (req, res) => {
                 saldoValor: {
                     "$sum": {"$cond": [{ "$eq": ["$resultado", "WIN"] }, "$valor", "-$valor"]}
                 }
-            }}
+            }},
+            { $sort : { saldo: -1 } }
         ]
     )
     .then((trades) => {
