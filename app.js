@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const path = require('path');
 
 require("./models/Users");
 const Users = mongoose.model('users');
@@ -21,9 +22,24 @@ mongoose.connect('mongodb://meutrader_admin:ABh0l13rftw#@mongo_meutrader_db:2701
     console.log("Erro: Conexão com MongoDB não foi realizada com sucesso!");
 });
 
+app.get("/nicepagecss", (req, res) => {
+    res.sendFile(path.join(__dirname+'/public/nicepage.css'));
+});
+app.get("/pagina1", (req, res) => {
+    res.sendFile(path.join(__dirname+'/public/Página-1.css'));
+});
+app.get("/jquery", (req, res) => {
+    res.sendFile(path.join(__dirname+'/public/jquery.js'));
+});
+app.get("/nicepagejs", (req, res) => {
+    res.sendFile(path.join(__dirname+'/public/nicepage.js'));
+});
+app.get("/icon", (req, res) => {
+    res.sendFile(path.join(__dirname+'/public/images/icon.jpeg'));
+});
 
 app.get("/", (req, res) => {
-    res.send("BEM VINDO AO MEU TRADER!")
+    res.sendFile(path.join(__dirname+'/public/index.html'));
 });
 
 app.get("/deleteAll", (req, res) => {
