@@ -8,6 +8,9 @@ const Users = mongoose.model('users');
 require("./models/Trades");
 const Trades = mongoose.model('trades');
 
+require("./models/UserConfig");
+const UserConfig = mongoose.model('userConfig');
+
 const app = express();
 
 app.use(express.json());
@@ -20,6 +23,10 @@ mongoose.connect('mongodb://meutrader_admin:ABh0l13rftw#@mongo_meutrader_db:2701
     console.log("Conexão com MongoDB realizada com sucesso!");
 }).catch((erro) => {
     console.log("Erro: Conexão com MongoDB não foi realizada com sucesso!");
+});
+
+app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname+'/public/index.html'));
 });
 
 app.get("/nicepagecss", (req, res) => {
@@ -36,10 +43,6 @@ app.get("/nicepagejs", (req, res) => {
 });
 app.get("/icon", (req, res) => {
     res.sendFile(path.join(__dirname+'/public/images/icon.jpeg'));
-});
-
-app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname+'/public/index.html'));
 });
 
 app.get("/deleteAll", (req, res) => {
@@ -94,7 +97,7 @@ app.get("/getTrades", (req, res) => {
             message: "Nenhum trade encontrado!"
         })
      })
- });
+});
 
 app.post("/postTrades", (req, res) => {
     const data = req.body;
@@ -108,7 +111,6 @@ app.post("/postTrades", (req, res) => {
         return res.json({msg:"TRADE CADASTRADOOOO"})
     });
 });
-
 
 app.get("/deleteAllTrades", (req, res) => {
     Trades.deleteMany({}).then(function(){ 
@@ -148,7 +150,31 @@ app.get("/getAggregatedTrades", (req, res) => {
             message: "Nenhum trade encontrado!"
         })
      })
- });
+});
+
+app.get("/getUserConfig", (req, res) => {
+    UserConfig.find({ accessKey: req.accessKey }).then((userConfig) => {
+        return res.json(userConfig);
+     }).catch((erro) => {
+        return res.status(400).json({
+            error: true,
+            message: "Nenhuma configuração encontrada para este usuário!"
+        })
+     })
+});
+
+app.post("/postUserConfig", (req, res) => {
+    const data = req.body;
+    const userConfig = new UserConfig(data);
+    userConfig.save((error) => {
+        if(error){
+            console.log(error)
+            res.status(500).json({msg: 'NÃO ROLOU'})
+            return;
+        }
+        return res.json({msg:"TRADE CADASTRADOOOO"})
+    });
+});
 
 app.listen(3000, () =>{
     console.log("Servidor iniciado na porta 3000: http://localhost:3000/");
