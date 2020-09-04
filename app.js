@@ -166,17 +166,14 @@ app.get("/getAllUsersConfigs", (req, res) => {
 
 app.post("/getUserConfig", (req, res) => {
     const data = req.body;
-    var query = UserConfig().find({ accessKey: data.accessKey })
-
-    query.exec(function(err, user) {
-        if (err) {
-            console.log(err)
-            callback(err)
-        } 
-        else {
-            console.log(user)
-            cb(null, !!user)
-        }
+    UserConfig.find({ accessKey: data.accessKey })
+    .then((userConfig) => {
+        return res.json(userConfig);
+    }).catch((erro) => {
+        return res.status(400).json({
+            error: true,
+            message: "Nenhuma configuração encontrada para este usuário!"
+        })
     })
 });
 
