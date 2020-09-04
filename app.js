@@ -164,11 +164,11 @@ app.get("/getAllUsersConfigs", (req, res) => {
      })
 });
 
-app.post("/getUserConfig", (req, res) => {
-    const data = req.body;
-    UserConfig.find({ accessKey: data.accessKey })
+app.get("/getUserConfig/:key", (req, res) => {
+    UserConfig.find({ accessKey: req.params.key })
     .then((userConfig) => {
-        return res.json(userConfig);
+        if(!userConfig) { return res.status(404).end(); }
+        return res.status(200).json(userConfig);
     }).catch((erro) => {
         return res.status(400).json({
             error: true,
