@@ -166,8 +166,7 @@ app.get("/getAllUsersConfigs", (req, res) => {
 
 app.post("/getUserConfig", (req, res) => {
     const data = req.body;
-    var userConfig = new UserConfig()
-    var query = userConfig.find({ accessKey: data.accessKey })
+    var query = await UserConfig().find({ accessKey: data.accessKey })
 
     query.exec(function(err, user) {
         if (err) {
