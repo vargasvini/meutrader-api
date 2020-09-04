@@ -211,6 +211,14 @@ app.post("/postUserConfig", (req, res) => {
     });
 });
 
+app.get("/deleteAllUsersConfigs", (req, res) => {
+    UserConfig.deleteMany({}).then(function(){ 
+        return res.json("TODOS AS CONFIGS DELETADAS"); // Success 
+    }).catch(function(error){ 
+        return res.json(error); // Failure 
+    }); 
+});
+
 app.listen(3000, () =>{
     console.log("Servidor iniciado na porta 3000: http://localhost:3000/");
 });
