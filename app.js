@@ -153,7 +153,8 @@ app.get("/getAggregatedTrades", (req, res) => {
 });
 
 app.get("/getUserConfig", (req, res) => {
-    UserConfig.find({ accessKey: req.accessKey }).then((userConfig) => {
+    const data = req.body;
+    UserConfig.find({ accessKey: data.accessKey }).then((userConfig) => {
         return res.json(userConfig);
      }).catch((erro) => {
         return res.status(400).json({
@@ -165,8 +166,29 @@ app.get("/getUserConfig", (req, res) => {
 
 app.post("/postUserConfig", (req, res) => {
     const data = req.body;
-    const userConfig = new UserConfig(data);
-    userConfig.save((error) => {
+    var query = { accessKey: data.accessKey },
+    update ={
+        accessKey: data.accessKey,
+        tipoFollow: data.tipoFollow,
+        followRank: data.followRank,
+        followId: data.followId,
+        blockId: data.blockId,
+        tipoGerenciamento: data.tipoGerenciamento,
+        valorEntrada: data.valorEntrada,
+        qtdMartingales: data.qtdMartingales,
+        valorStopWin: data.valorStopWin,
+        valorStopLoss: data.valorStopLoss,
+        valorMinimoTrader: data.valorMinimoTrader,
+        tipoConta: data.tipoConta,
+        tipoOpcoes: data.tipoOpcoes,
+        tipoExpiracao: data.tipoExpiracao,
+        selectedParidades: data.selectedParidades
+    },
+    options = { upsert: true, new: true, setDefaultsOnInsert: true };
+
+    //const userConfig = new UserConfig(data);
+    //userConfig.save((error) => {
+    UserConfig.findOneAndUpdate(query, update, options, (error)=>{
         if(error){
             console.log(error)
             res.status(500).json({msg: 'NÃO ROLOU'})
