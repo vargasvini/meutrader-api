@@ -152,9 +152,21 @@ app.get("/getAggregatedTrades", (req, res) => {
      })
 });
 
-app.get("/getUserConfig", (req, res) => {
+app.get("/getAllUsersConfigs", (req, res) => {
     const data = req.body;
     UserConfig.find({ }).then((userConfig) => {
+        return res.json(userConfig);
+     }).catch((erro) => {
+        return res.status(400).json({
+            error: true,
+            message: "Nenhuma configuração encontrada para este usuário!"
+        })
+     })
+});
+
+app.post("/getUserConfig", (req, res) => {
+    const data = req.body;
+    UserConfig.find({ accessKey: data.accessKey }).then((userConfig) => {
         return res.json(userConfig);
      }).catch((erro) => {
         return res.status(400).json({
