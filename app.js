@@ -153,7 +153,7 @@ app.get("/getAggregatedTrades", (req, res) => {
 });
 
 app.get("/getUserConfig", (req, res) => {
-    const data = req.body;
+    const data = JSON.parse(req.body);
     UserConfig.find({ accessKey: data.accessKey }).then((userConfig) => {
         return res.json(userConfig);
      }).catch((erro) => {
@@ -165,7 +165,7 @@ app.get("/getUserConfig", (req, res) => {
 });
 
 app.post("/postUserConfig", (req, res) => {
-    const data = req.body;
+    const data = JSON.parse(req.body);
     var query = { accessKey: data.accessKey },
     update ={
         accessKey: data.accessKey,
