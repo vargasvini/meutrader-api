@@ -65,10 +65,13 @@ app.get("/getUsers", (req, res) => {
 });
 
 app.get('/cad-user', function(req, res){
+    var dateToExpire = new Date()
+    dateToExpire.setMonth(dateToExpire.getMonth()+1)
     new Users({
         nome: "teste",
         accessKey: "9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d",
-        isActive: true
+        isActive: true,
+        expireDate: dateToExpire
     }).save().then(() => {
         res.send("Cadastro realizado com sucesso")
     }).catch((erro) => {

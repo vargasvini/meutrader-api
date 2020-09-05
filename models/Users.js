@@ -12,6 +12,10 @@ const Users = new mongoose.Schema({
     isActive:{
         type: Boolean,
         required: true
+    },
+    expireDate:{
+        type: Date,
+        required: true
     }
 },
 {
