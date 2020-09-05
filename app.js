@@ -117,13 +117,13 @@ app.post("/postTrades", (req, res) => {
     });
 });
 
-app.get("/deleteAllTrades", (req, res) => {
-    Trades.deleteMany({}).then(function(){ 
-        return res.json("TODOS OS TRADES DELETADOS"); // Success 
-    }).catch(function(error){ 
-        return res.json(error); // Failure 
-    }); 
-});
+// app.get("/deleteAllTrades", (req, res) => {
+//     Trades.deleteMany({}).then(function(){ 
+//         return res.json("TODOS OS TRADES DELETADOS"); // Success 
+//     }).catch(function(error){ 
+//         return res.json(error); // Failure 
+//     }); 
+// });
 
 app.get("/getAggregatedTrades", (req, res) => {
     Trades.aggregate(
