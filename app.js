@@ -230,10 +230,9 @@ app.get("/verifyExpiredUsers", (req, res) => {
         Users.updateMany({expireDate: {$lt: date}}, {isActive: false}, (error)=>{
             if(error){
                 console.log(error)
-                res.status(500).json({msg: 'NÃO ROLOU'})
                 return;
             }
-            return res.json({msg:"TRADE CADASTRADOOOO"})
+            return console.log('ROLOU')
         });
     });
 });
