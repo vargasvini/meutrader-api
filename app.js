@@ -46,7 +46,7 @@ app.get("/icon", (req, res) => {
     res.sendFile(path.join(__dirname+'/public/images/icon.jpeg'));
 });
 
-app.get("/deleteAll", (req, res) => {
+app.get("/deleteAllUsers", (req, res) => {
     Users.deleteMany({}).then(function(){ 
         return res.json("TODOS OS USUÁRIOS DELETADOS"); // Success 
     }).catch(function(error){ 
@@ -67,8 +67,7 @@ app.get("/getUsers", (req, res) => {
 
 app.get('/cad-user', function(req, res){
     var dateToExpire = new Date()
-    //dateToExpire.setMonth(dateToExpire.getMonth()+1)
-    dateToExpire.setMinutes(dateToExpire.getMinutes()+2)
+    dateToExpire.setMonth(dateToExpire.getMonth()+1)
     new Users({
         nome: "teste",
         accessKey: "9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d",
