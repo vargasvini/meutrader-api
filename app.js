@@ -66,10 +66,11 @@ app.get("/getUsers", (req, res) => {
 
 app.get('/cad-user', function(req, res){
     var dateToExpire = new Date()
-    dateToExpire.setMonth(dateToExpire.getMonth()+1)
+    //dateToExpire.setMonth(dateToExpire.getMonth()+1)
+    dateToExpire.setMinutes(dateToExpire.getMinutes()+2)
     new Users({
         nome: "teste",
-        accessKey: "9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d",
+        accessKey: "999deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d",
         isActive: true,
         expireDate: dateToExpire
     }).save().then(() => {
@@ -202,8 +203,6 @@ app.post("/postUserConfig", (req, res) => {
     },
     options = { upsert: true, new: true, setDefaultsOnInsert: true };
 
-    //const userConfig = new UserConfig(data);
-    //userConfig.save((error) => {
     UserConfig.findOneAndUpdate(query, update, options, (error)=>{
         if(error){
             console.log(error)
@@ -221,6 +220,23 @@ app.get("/deleteAllUsersConfigs", (req, res) => {
         return res.json(error); // Failure 
     }); 
 });
+
+app.get("/verifyExpiredUsers", (req, res) => {
+    var j = schedule.scheduleJob('*/1 * * * *', function(){
+        var date = new Date()
+        console.log('Iniciando Job de usuários expirados');
+
+        Users.updateMany({expireDate: {$lt: date}}, {isActive: false}, (error)=>{
+            if(error){
+                console.log(error)
+                res.status(500).json({msg: 'NÃO ROLOU'})
+                return;
+            }
+            return res.json({msg:"TRADE CADASTRADOOOO"})
+        });
+    });
+});
+
 
 app.listen(3000, () =>{
     console.log("Servidor iniciado na porta 3000: http://localhost:3000/");
