@@ -71,7 +71,7 @@ app.get('/cad-user', function(req, res){
     dateToExpire.setMinutes(dateToExpire.getMinutes()+2)
     new Users({
         nome: "teste",
-        accessKey: "999deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d",
+        accessKey: "9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d",
         isActive: true,
         expireDate: dateToExpire
     }).save().then(() => {
@@ -223,7 +223,7 @@ app.get("/deleteAllUsersConfigs", (req, res) => {
 });
 
 app.get("/verifyExpiredUsers", (req, res) => {
-    var j = schedule.scheduleJob('*/1 * * * *', function(){
+    var j = schedule.scheduleJob({hour: 12, minute: 00}, function(){
         var date = new Date()
         console.log('Iniciando Job de usuários expirados');
 
@@ -232,11 +232,10 @@ app.get("/verifyExpiredUsers", (req, res) => {
                 console.log(error)
                 return;
             }
-            return console.log('ROLOU')
+            return console.log('Verificação de usuários expirados realizada com sucesso')
         });
     });
 });
-
 
 app.listen(3000, () =>{
     console.log("Servidor iniciado na porta 3000: http://localhost:3000/");
