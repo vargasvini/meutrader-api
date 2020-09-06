@@ -33,8 +33,8 @@ app.get("/", (req, res) => {
 app.get("/nicepagecss", (req, res) => {
     res.sendFile(path.join(__dirname+'/public/nicepage.css'));
 });
-app.get("/pagina1", (req, res) => {
-    res.sendFile(path.join(__dirname+'/public/Página-1.css'));
+app.get("/meutradercss", (req, res) => {
+    res.sendFile(path.join(__dirname+'/public/MeuTrader.css'));
 });
 app.get("/jquery", (req, res) => {
     res.sendFile(path.join(__dirname+'/public/jquery.js'));
@@ -42,8 +42,8 @@ app.get("/jquery", (req, res) => {
 app.get("/nicepagejs", (req, res) => {
     res.sendFile(path.join(__dirname+'/public/nicepage.js'));
 });
-app.get("/icon", (req, res) => {
-    res.sendFile(path.join(__dirname+'/public/images/icon.jpeg'));
+app.get("/banner", (req, res) => {
+    res.sendFile(path.join(__dirname+'/public/images/banner-meu-trader-home.png'));
 });
 
 app.get("/deleteAllUsers", (req, res) => {
