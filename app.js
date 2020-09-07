@@ -27,6 +27,8 @@ mongoose.connect('mongodb://meutrader_admin:ABh0l13rftw#@mongo_meutrader_db:2701
 });
 
 app.get("/", (req, res) => {
+    //console.log(`mongodb://${process.env.db-user}:${process.env.db-password}@${process.env.db-meutrader}`)
+    console.log(`${process.env.MONGODB_URL}`)
     res.sendFile(path.join(__dirname+'/public/index.html'));
 });
 
