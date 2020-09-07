@@ -19,7 +19,8 @@ app.use(express.urlencoded({ extended: false }));
 
 mongoose.connect(process.env.MONGODB_URL, {
   useNewUrlParser: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
+  useFindAndModify: false,
 }).then(() => {
     console.log("Conexão com MongoDB realizada com sucesso!");
 }).catch((erro) => {
