@@ -17,7 +17,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-mongoose.connect('mongodb://meutrader_admin:ABh0l13rftw#@mongo_meutrader_db:27017/meutrader_db', {
+mongoose.connect(process.env.MONGODB_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 }).then(() => {
@@ -27,8 +27,6 @@ mongoose.connect('mongodb://meutrader_admin:ABh0l13rftw#@mongo_meutrader_db:2701
 });
 
 app.get("/", (req, res) => {
-    //console.log(`mongodb://${process.env.db-user}:${process.env.db-password}@${process.env.db-meutrader}`)
-    console.log(`${process.env.MONGODB_URL}`)
     res.sendFile(path.join(__dirname+'/public/index.html'));
 });
 
