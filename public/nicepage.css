@@ -3,7 +3,7 @@
 /*!
  * animate.css -https://daneden.github.io/animate.css/
  * Version - 3.7.2
- * Licensed under the MIT license - http://opensource.org/licenses/MIT
+ * Licensed under the MIT license - https://opensource.org/licenses/MIT
  *
  * Copyright (c) 2019 Daniel Eden
  */
@@ -16201,7 +16201,7 @@ a.pswp__share--download:hover {
 
 	5. Loading indicator (preloader)
 
-	You can play with it here - http://codepen.io/dimsemenov/pen/yyBWoR
+	You can play with it here - https://codepen.io/dimsemenov/pen/yyBWoR
 
  */
 .pswp__preloader {
@@ -16952,10 +16952,10 @@ a.pswp__share--download:hover {
   width: 65px;
 }
 .u-carousel-control-prev-icon {
-  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 8 8'%3E%3Cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='https://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 8 8'%3E%3Cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E");
 }
 .u-carousel-control-next-icon {
-  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='https://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E");
 }
 .u-carousel-indicators {
   position: absolute;
