@@ -122,7 +122,19 @@
         <h2 class="u-heading-font u-subtitle u-text u-text-3">Quero me cadastrar:</h2>
         <link href="https://cdn-images.mailchimp.com/embedcode/classic-10_7.css" rel="stylesheet" type="text/css">
         <div class="u-clearfix u-custom-html u-custom-html-1"><!-- Begin Mailchimp Signup Form -->
-          <style type="text/css"> #mc_embed_signup{background:#e5e5e5; clear:left; font:14px Helvetica,Arial,sans-serif;}  .input-mcembed{height: 45px; font-size: 16px; margin-bottom: 6px;}</style>
+          <style type="text/css"> #mc_embed_signup{background:#e5e5e5; clear:left; font:14px Helvetica,Arial,sans-serif;}  .input-mcembed{height: 45px; font-size: 16px; margin-bottom: 6px;}
+          .no-arrow {
+            -moz-appearance: textfield;
+          }
+          .no-arrow::-webkit-inner-spin-button {
+            display: none;
+          }
+          .no-arrow::-webkit-outer-spin-button,
+          .no-arrow::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+          }
+          </style>
           <div id="mc_embed_signup">
             <form action="https://meutrader.us17.list-manage.com/subscribe/post?u=26104bb2af7815fc5405fbad0&amp;id=6f5c7b6926" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate="" style="padding:10px; text-align: center; font-family: 'Open Sans',sans-serif;">
               <div id="mc_embed_signup_scroll">
@@ -136,7 +148,7 @@
                 </div>
                 <div class="u-form-group u-form-phone u-form-group-3">
                   <label for="mce-FPHONE" class="u-form-control-hidden u-label">Telefone</label>
-                  <input type="text" placeholder="Insira seu telefone (ex: +14155552675)" name="FPHONE" class="input-mcembed u-border-1 u-border-grey-30 u-border-radius-0 u-custom-font u-font-roboto u-input u-input-rectangle u-white required" value="" id="mce-FPHONE">
+                  <input type="number" placeholder="Insira seu telefone (ex: +14155552675)" name="FPHONE" class="no-arrow input-mcembed u-border-1 u-border-grey-30 u-border-radius-0 u-custom-font u-font-roboto u-input u-input-rectangle u-white required" value="" id="mce-FPHONE">
                 </div>
                 <div class="mc-field-group" style="width: 100%;">
                   <label for="mce-SELECTOS" style="font-size: 1rem;">Informe seu sistema operacional <span class="asterisk">*</span>
