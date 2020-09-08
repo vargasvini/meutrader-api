@@ -2,6 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
 var schedule = require('node-schedule');
+import * as jwt from './setup/jwt'
+import { pathToFileURL } from 'url';
 
 process.env.NODE_ENV = 'production';
 
@@ -70,10 +72,15 @@ app.get("/deleteAllUsers", (req, res) => {
     }); 
 });
 
-app.get("/getUsers", (req, res, next) => {
-    if(1==1){
-        next() 
-    }else{
+app.get("/getUsers", async (req, res, next) => {
+    const [, token] = req.headers.authorization.split(' ')
+    console.log(req.headers.authorization)
+
+    try {
+        const payload = await jwt.verify(token)
+        console.log(payload)
+        next()
+    } catch (error) {
         return res.status(401).json({
             error: true,
             message: "Acesso não autorizado!"
