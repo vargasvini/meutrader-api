@@ -5,8 +5,6 @@ var schedule = require('node-schedule');
 const jwt = require('jsonwebtoken');
 
 process.env.NODE_ENV = 'production';
-const secret = process.env.TOKEN_SECRET
-
 
 function requireHTTPS(req, res, next) {
     if (!req.secure && req.get('x-forwarded-proto') !== 'https' && process.env.NODE_ENV !== "development") {
@@ -30,15 +28,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(requireHTTPS);
 
-// mongoose.connect(process.env.MONGODB_URL, {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true,
-//   useFindAndModify: false,
-// }).then(() => {
-//     console.log("Conexão com MongoDB realizada com sucesso!");
-// }).catch((erro) => {
-//     console.log("Erro: Conexão com MongoDB não foi realizada com sucesso!");
-// });
+mongoose.connect(process.env.MONGODB_URL, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useFindAndModify: false,
+}).then(() => {
+    console.log("Conexão com MongoDB realizada com sucesso!");
+}).catch((erro) => {
+    console.log("Erro: Conexão com MongoDB não foi realizada com sucesso!");
+});
 
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname+'/public/index.html'));
@@ -65,6 +63,21 @@ app.get('/robots.txt', function (req, res) {
     res.send("User-agent: *\nDisallow: /");
 });
 
+
+app.post('/authenticate', async (req, res) =>{
+    const accessKey = req.body;
+    const user = await Users.findOne({accessKey})
+
+    if(!user)
+        return res.status(400).send({error: 'User not found'})
+
+    const token = jwt.sign({ id: user.id }, process.env.TOKEN_SECRET, {
+        expiresIn: 86400
+    })
+
+    res.send({user, token})
+});
+
 app.get("/deleteAllUsers", (req, res) => {
     Users.deleteMany({}).then(function(){ 
         return res.json("TODOS OS USUÁRIOS DELETADOS"); // Success 
@@ -73,32 +86,28 @@ app.get("/deleteAllUsers", (req, res) => {
     }); 
 });
 
-app.get("/getUsers", (req, res, next) => {
-    const [, token] = req.headers.authorization.split(' ')
-    console.log(req.headers.authorization)
-
-    try {
-        const payload =  jwt.verify(token, secret)
-        console.log(payload)
-        next()
-    } catch (error) {
-        return res.status(401).json({
-            error: true,
-            message: "Acesso não autorizado!"
-        })
-    }
-    
-},
-(req, res, next) =>{
-   Users.find({}).then((users) => {
-        return res.json(users);
-    }).catch((erro) => {
-        return res.status(400).json({
-            error: true,
-            message: "Nenhum users encontrado!"
-        })
-    })
-});
+// app.get("/getUsers", (req, res, next) => {
+//     try {
+//         const payload =  jwt.verify(token, secret)
+//         console.log(payload)
+//         next()
+//     } catch (error) {
+//         return res.status(401).json({
+//             error: true,
+//             message: "Acesso não autorizado!"
+//         })
+//     }
+// },
+// (req, res, next) =>{
+//    Users.find({}).then((users) => {
+//         return res.json(users);
+//     }).catch((erro) => {
+//         return res.status(400).json({
+//             error: true,
+//             message: "Nenhum users encontrado!"
+//         })
+//     })
+// });
 
 app.get('/cad-user', function(req, res){
     var dateToExpire = new Date()
