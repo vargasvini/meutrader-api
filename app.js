@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const path = require('path');
 var schedule = require('node-schedule');
 const jwt = require('jsonwebtoken');
+const authMiddleware = require('./setup/auth')
 
 process.env.NODE_ENV = 'production';
 
@@ -17,30 +18,6 @@ function generateToken(params = {}){
     return jwt.sign(params, process.env.TOKEN_SECRET, {
         expiresIn: 86400
     })
-}
-
-function authMiddleware(){
-    const authHeader = req.headers.authorization;
-
-    if (!authHeader)
-        return res.status(401).send({error: 'No Token provided'});
-
-    const parts = authHeader.split(' ')
-
-    if(!parts.length === 2)
-        return res.status(401).send({error: 'Token error'})
-
-    const[scheme, token] = parts;
-
-    if(!/^Bearer$/i.test(scheme))
-        return res.status(401).send({error: 'Token malformatted'})
-
-    jwt.verify(token, secret, (err, decoded) =>{
-        if (err) return res.status(401).send({error: 'Invalid Token'})
-
-        req.userId = decoded.id;
-        return next();
-    });
 }
 
 require("./models/Users");
