@@ -2,9 +2,11 @@ const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
 var schedule = require('node-schedule');
-const jwt = require('./setup/jwt');
+const jwt = require('jsonwebtoken');
 
 process.env.NODE_ENV = 'production';
+const secret = process.env.TOKEN_SECRET
+
 
 function requireHTTPS(req, res, next) {
     if (!req.secure && req.get('x-forwarded-proto') !== 'https' && process.env.NODE_ENV !== "development") {
@@ -71,12 +73,12 @@ app.get("/deleteAllUsers", (req, res) => {
     }); 
 });
 
-app.get("/getUsers", async (req, res, next) => {
+app.get("/getUsers", (req, res, next) => {
     const [, token] = req.headers.authorization.split(' ')
     console.log(req.headers.authorization)
 
     try {
-        const payload = await jwt.verify(token)
+        const payload =  jwt.verify(token, secret)
         console.log(payload)
         next()
     } catch (error) {
