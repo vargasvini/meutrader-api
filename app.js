@@ -13,6 +13,36 @@ function requireHTTPS(req, res, next) {
     next();
 }
 
+function generateToken(params = {}){
+    return jwt.sign(params, process.env.TOKEN_SECRET, {
+        expiresIn: 86400
+    })
+}
+
+function authMiddleware(){
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader)
+        return res.status(401).send({error: 'No Token provided'});
+
+    const parts = authHeader.split(' ')
+
+    if(!parts.length === 2)
+        return res.status(401).send({error: 'Token error'})
+
+    const[scheme, token] = parts;
+
+    if(!/^Bearer$/i.test(scheme))
+        return res.status(401).send({error: 'Token malformatted'})
+
+    jwt.verify(token, secret, (err, decoded) =>{
+        if (err) return res.status(401).send({error: 'Invalid Token'})
+
+        req.userId = decoded.id;
+        return next();
+    });
+}
+
 require("./models/Users");
 const Users = mongoose.model('users');
 
@@ -27,6 +57,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(requireHTTPS);
+app.use(authMiddleware)
 
 mongoose.connect(process.env.MONGODB_URL, {
   useNewUrlParser: true,
@@ -71,11 +102,7 @@ app.post('/authenticate', async (req, res) =>{
     if(!user)
         return res.status(400).send({error: 'User not found'})
 
-    const token = jwt.sign({ id: user.id }, process.env.TOKEN_SECRET, {
-        expiresIn: 86400
-    })
-
-    res.send({user, token})
+    res.send({user, token: generateToken({ id: user.id })})
 });
 
 app.get("/deleteAllUsers", (req, res) => {
@@ -86,28 +113,16 @@ app.get("/deleteAllUsers", (req, res) => {
     }); 
 });
 
-// app.get("/getUsers", (req, res, next) => {
-//     try {
-//         const payload =  jwt.verify(token, secret)
-//         console.log(payload)
-//         next()
-//     } catch (error) {
-//         return res.status(401).json({
-//             error: true,
-//             message: "Acesso não autorizado!"
-//         })
-//     }
-// },
-// (req, res, next) =>{
-//    Users.find({}).then((users) => {
-//         return res.json(users);
-//     }).catch((erro) => {
-//         return res.status(400).json({
-//             error: true,
-//             message: "Nenhum users encontrado!"
-//         })
-//     })
-// });
+app.get("/getUsers", (req, res) => {
+   Users.find({}).then((users) => {
+        return res.json(users);
+    }).catch((erro) => {
+        return res.status(400).json({
+            error: true,
+            message: "Nenhum users encontrado!"
+        })
+    })
+});
 
 app.get('/cad-user', function(req, res){
     var dateToExpire = new Date()
