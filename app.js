@@ -8,11 +8,6 @@ const { v4: uuidv4 } = require('uuid');
 
 process.env.NODE_ENV = 'production';
 
-/*SE DEV*/
-// process.env.MONGODB_URL = 'mongodb://127.0.0.1:27017/'
-// process.env.TOKEN_SECRET = '8Y1lHS1x2Ywf6thQPyGNtJPo6RxE8Df8SDD5vy1NQ'
-/*=====*/
-
 function requireHTTPS(req, res, next) {
     if (!req.secure && req.get('x-forwarded-proto') !== 'https' && process.env.NODE_ENV !== "development") {
       return res.redirect('https://' + req.get('Host') + req.url);
