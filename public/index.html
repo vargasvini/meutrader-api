@@ -7,17 +7,15 @@
     <meta name="description" content="Invista em opções binárias e digitais da IQ Option de forma segura e inteligente. Tudo isso com o melhor custo-benefício do mercado. ">
     <meta name="page_type" content="np-template-header-footer-from-plugin">
     <title>Meu Trader - O Jeito Inteligente de Complementar sua Renda</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js" integrity="sha512-pHVGpX7F/27yZ0ISY+VVjyULApbDlD0/X0rgGbTqCE7WFW5MezNTWG/dnhtbBuICzsd0WQPgpE4REBLv+UqChw==" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://meutrader-com.umbler.net/nicepagecss" media="screen">
     <link rel="stylesheet" href="https://meutrader-com.umbler.net/meutradercss" media="screen">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" ></script>
     <script class="u-script" type="text/javascript" src="https://meutrader-com.umbler.net/jquery" defer=""></script>
     <script class="u-script" type="text/javascript" src="https://meutrader-com.umbler.net/nicepagejs" defer=""></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js" defer=""></script>
     <meta name="generator" content="Nicepage 2.24.4, nicepage.com">
     <link rel="canonical" href="www.meutrader.com">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.js"></script>
-    
-    
-    
+
     
     
     <link id="u-theme-google-font" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i|Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i">
@@ -150,7 +148,7 @@
                 </div>
                 <div class="u-form-group u-form-phone u-form-group-3">
                   <label for="mce-FPHONE" class="u-form-control-hidden u-label">Telefone</label>
-                  <input type="number" placeholder="Insira seu telefone (ex: +14155552675)" name="FPHONE" class="no-arrow input-mcembed u-border-1 u-border-grey-30 u-border-radius-0 u-custom-font u-font-roboto u-input u-input-rectangle u-white required" value="" id="mce-FPHONE">
+                  <input type="text" placeholder="Insira seu telefone [ex: (11) 99999-9999]" name="FPHONE" class="no-arrow input-mcembed u-border-1 u-border-grey-30 u-border-radius-0 u-custom-font u-font-roboto u-input u-input-rectangle u-white required" value="" id="mce-FPHONE">
                 </div>
                 <div class="mc-field-group" style="width: 100%;">
                   <label for="mce-SELECTOS" style="font-size: 1rem;">Informe seu sistema operacional <span class="asterisk">*</span>
@@ -195,5 +193,10 @@
         <span style="color: #49f095">© Meu Trader 2020</span>
       </p>
     </section>
+    <script>
+      $(document).ready(function () {
+          $("#mce-FPHONE").mask("(99) 99999-9999");  
+      });
+    </script>
   </body>
 </html>
