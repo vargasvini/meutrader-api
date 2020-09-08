@@ -73,6 +73,11 @@ app.get("/deleteAllUsers", (req, res) => {
 app.get("/getUsers", (req, res, next) => {
     if(1==1){
         next() 
+    }else{
+        return res.status(401).json({
+            error: true,
+            message: "Acesso não autorizado!"
+        })
     }
     
 },
