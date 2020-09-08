@@ -4,7 +4,6 @@ const path = require('path');
 var schedule = require('node-schedule');
 const jwt = require('./setup/jwt');
 
-
 process.env.NODE_ENV = 'production';
 
 function requireHTTPS(req, res, next) {
@@ -29,15 +28,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(requireHTTPS);
 
-mongoose.connect(process.env.MONGODB_URL, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useFindAndModify: false,
-}).then(() => {
-    console.log("Conexão com MongoDB realizada com sucesso!");
-}).catch((erro) => {
-    console.log("Erro: Conexão com MongoDB não foi realizada com sucesso!");
-});
+// mongoose.connect(process.env.MONGODB_URL, {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true,
+//   useFindAndModify: false,
+// }).then(() => {
+//     console.log("Conexão com MongoDB realizada com sucesso!");
+// }).catch((erro) => {
+//     console.log("Erro: Conexão com MongoDB não foi realizada com sucesso!");
+// });
 
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname+'/public/index.html'));
