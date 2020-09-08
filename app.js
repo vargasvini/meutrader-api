@@ -2,8 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
 var schedule = require('node-schedule');
-import * as jwt from './setup/jwt'
-import { pathToFileURL } from 'url';
+const jwt = require('./setup/jwt');
+
 
 process.env.NODE_ENV = 'production';
 
