@@ -33,7 +33,7 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(requireHTTPS);
+//app.use(requireHTTPS);
 app.use(authMiddleware)
 
 mongoose.connect(process.env.MONGODB_URL, {
