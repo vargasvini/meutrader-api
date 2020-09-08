@@ -33,8 +33,8 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-//app.use(requireHTTPS);
-app.use(authMiddleware)
+app.use(requireHTTPS);
+//app.use(authMiddleware)
 
 mongoose.connect(process.env.MONGODB_URL, {
   useNewUrlParser: true,
@@ -90,7 +90,7 @@ app.get("/deleteAllUsers", (req, res) => {
     }); 
 });
 
-app.get("/getUsers", (req, res) => {
+app.get("/getUsers", authMiddleware, (req, res) => {
    Users.find({}).then((users) => {
         return res.json(users);
     }).catch((erro) => {
