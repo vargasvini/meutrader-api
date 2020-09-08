@@ -3,14 +3,7 @@ const mongoose = require('mongoose');
 const path = require('path');
 var schedule = require('node-schedule');
 
-// app.use((req, res, next) => { //Cria um middleware onde todas as requests passam por ele 
-//     if ((req.headers["x-forwarded-proto"] || "").endsWith("http")) //Checa se o protocolo informado nos headers é HTTP 
-//         res.redirect(`https://${req.headers.host}${req.url}`); //Redireciona pra HTTPS 
-//     else //Se a requisição já é HTTPS 
-//         next(); //Não precisa redirecionar, passa para os próximos middlewares que servirão com o conteúdo desejado 
-// });
 function requireHTTPS(req, res, next) {
-    // The 'x-forwarded-proto' check is for Heroku
     if (!req.secure && req.get('x-forwarded-proto') !== 'https' && process.env.NODE_ENV !== "development") {
       return res.redirect('https://' + req.get('Host') + req.url);
     }
@@ -60,6 +53,11 @@ app.get("/nicepagejs", (req, res) => {
 });
 app.get("/banner", (req, res) => {
     res.sendFile(path.join(__dirname+'/public/images/banner-meu-trader-home.png'));
+});
+
+app.get('/robots.txt', function (req, res) {
+    res.type('text/plain');
+    res.send("User-agent: *\nDisallow: /");
 });
 
 app.get("/deleteAllUsers", (req, res) => {
