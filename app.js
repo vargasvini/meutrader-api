@@ -4,8 +4,14 @@ const path = require('path');
 var schedule = require('node-schedule');
 const jwt = require('jsonwebtoken');
 const authMiddleware = require('./setup/auth')
+const { v4: uuidv4 } = require('uuid');
 
 process.env.NODE_ENV = 'production';
+
+/*SE DEV*/
+// process.env.MONGODB_URL = 'mongodb://127.0.0.1:27017/'
+// process.env.TOKEN_SECRET = '8Y1lHS1x2Ywf6thQPyGNtJPo6RxE8Df8SDD5vy1NQ'
+/*=====*/
 
 function requireHTTPS(req, res, next) {
     if (!req.secure && req.get('x-forwarded-proto') !== 'https' && process.env.NODE_ENV !== "development") {
@@ -15,9 +21,18 @@ function requireHTTPS(req, res, next) {
 }
 
 function generateToken(params = {}){
-    return jwt.sign(params, process.env.TOKEN_SECRET, {
-        expiresIn: 86400
-    })
+    return jwt.sign(params, process.env.TOKEN_SECRET)
+}
+
+async function generateKey(){
+    var generatedKey = uuidv4()
+    const user = await Users.findOne({ accessKey: uuidv4() })
+        
+    if(user){
+        generateKey();
+    }else{
+        return generatedKey;
+    }
 }
 
 require("./models/Users");
@@ -34,7 +49,6 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(requireHTTPS);
-//app.use(authMiddleware)
 
 mongoose.connect(process.env.MONGODB_URL, {
   useNewUrlParser: true,
@@ -66,15 +80,15 @@ app.get("/banner", (req, res) => {
     res.sendFile(path.join(__dirname+'/public/images/banner-meu-trader-home.png'));
 });
 
+
 app.get('/robots.txt', function (req, res) {
     res.type('text/plain');
-    res.send("User-agent: *\nDisallow: /");
+    res.send("User-agent: *\nDisallow: /api/");
 });
 
-
-app.post('/authenticate', async (req, res) =>{
+app.post('/api/authenticate', async (req, res) =>{
     const accessKey = req.body.accessKey;
-    const user = await Users.findOne({accessKey})
+    const user = await Users.findOne({accessKey, isActive: true})
 
     if(!user)
         return res.status(400).send({error: 'User not found'})
@@ -82,7 +96,39 @@ app.post('/authenticate', async (req, res) =>{
     res.send({user, token: generateToken({ id: user.id })})
 });
 
-app.get("/deleteAllUsers", (req, res) => {
+app.get("/api/getUsers", authMiddleware, (req, res) => {
+    Users.find({}).then((users) => {
+         return res.json(users);
+     }).catch((erro) => {
+         return res.status(400).json({
+             error: true,
+             message: "Nenhum users encontrado!"
+         })
+     })
+ });
+
+app.post("/api/postUser", authMiddleware, (req, res) => {
+    var key = "";
+    var dateToExpire = new Date()
+    dateToExpire.setMonth(dateToExpire.getMonth()+1)
+    generateKey().then((response)=> {
+        key = response
+        new Users({
+            nome: req.body.name,
+            email: req.body.email,
+            phone: req.body.phone,
+            accessKey: key,
+            isActive: true,
+            expireDate: dateToExpire
+        }).save().then(() => {
+            res.send("Cadastro realizado com sucesso")
+        }).catch((erro) => {
+            return res.status(400).send({error: 'User cannot be created'})
+        })
+    })
+});
+
+app.get("/api/deleteAllUsers", authMiddleware, (req, res) => {
     Users.deleteMany({}).then(function(){ 
         return res.json("TODOS OS USUÁRIOS DELETADOS"); // Success 
     }).catch(function(error){ 
@@ -90,45 +136,7 @@ app.get("/deleteAllUsers", (req, res) => {
     }); 
 });
 
-app.get("/getUsers", authMiddleware, (req, res) => {
-   Users.find({}).then((users) => {
-        return res.json(users);
-    }).catch((erro) => {
-        return res.status(400).json({
-            error: true,
-            message: "Nenhum users encontrado!"
-        })
-    })
-});
-
-app.get('/cad-user', function(req, res){
-    var dateToExpire = new Date()
-    dateToExpire.setMonth(dateToExpire.getMonth()+1)
-    new Users({
-        nome: "teste",
-        accessKey: "9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d",
-        isActive: true,
-        expireDate: dateToExpire
-    }).save().then(() => {
-        res.send("Cadastro realizado com sucesso")
-    }).catch((erro) => {
-        res.send("ERRO "+erro)
-    })
-})
-
-app.post("/postUser", (req, res) => {
-    const data = req.body;
-    const usersCad = new Users(data);
-    usersCad.save((error) => {
-        if(error){            
-            res.status(500).json({msg: 'NÃO ROLOU'})
-            return;
-        }
-        return res.json({msg:"USUÁRIO CADASTRADOOOO"})
-    });
-});
-
-app.get("/getTrades", (req, res) => {
+app.get("/api/getTrades", authMiddleware, (req, res) => {
     Trades.find({}).then((trades) => {
         return res.json(trades);
      }).catch((erro) => {
@@ -139,7 +147,7 @@ app.get("/getTrades", (req, res) => {
      })
 });
 
-app.post("/postTrades", (req, res) => {
+app.post("/api/postTrades", authMiddleware, (req, res) => {
     const data = req.body;
     const trades = new Trades(data);
     trades.save((error) => {
@@ -152,7 +160,7 @@ app.post("/postTrades", (req, res) => {
     });
 });
 
-// app.get("/deleteAllTrades", (req, res) => {
+// app.get("/api/deleteAllTrades", (req, res) => {
 //     Trades.deleteMany({}).then(function(){ 
 //         return res.json("TODOS OS TRADES DELETADOS"); // Success 
 //     }).catch(function(error){ 
@@ -160,7 +168,7 @@ app.post("/postTrades", (req, res) => {
 //     }); 
 // });
 
-app.get("/getAggregatedTrades", (req, res) => {
+app.get("/api/getAggregatedTrades", authMiddleware, (req, res) => {
     Trades.aggregate(
         [
 
@@ -192,19 +200,19 @@ app.get("/getAggregatedTrades", (req, res) => {
      })
 });
 
-app.get("/getAllUsersConfigs", (req, res) => {
-    const data = req.body;
-    UserConfig.find({ }).then((userConfig) => {
-        return res.json(userConfig);
-     }).catch((erro) => {
-        return res.status(400).json({
-            error: true,
-            message: "Nenhuma configuração encontrada para este usuário!"
-        })
-     })
-});
+// app.get("/getAllUsersConfigs", (req, res) => {
+//     const data = req.body;
+//     UserConfig.find({ }).then((userConfig) => {
+//         return res.json(userConfig);
+//      }).catch((erro) => {
+//         return res.status(400).json({
+//             error: true,
+//             message: "Nenhuma configuração encontrada para este usuário!"
+//         })
+//      })
+// });
 
-app.get("/getUserConfig/:key", (req, res) => {
+app.get("/api/getUserConfig/:key", authMiddleware, (req, res) => {
     UserConfig.find({ accessKey: req.params.key })
     .then((userConfig) => {
         if(!userConfig) { return res.status(404).end(); }
@@ -217,7 +225,7 @@ app.get("/getUserConfig/:key", (req, res) => {
     })
 });
 
-app.post("/postUserConfig", (req, res) => {
+app.post("/api/postUserConfig", authMiddleware, (req, res) => {
     const data = req.body;
     var query = { accessKey: data.accessKey },
     update ={
@@ -249,7 +257,7 @@ app.post("/postUserConfig", (req, res) => {
     });
 });
 
-app.get("/deleteAllUsersConfigs", (req, res) => {
+app.get("/api/deleteAllUsersConfigs", authMiddleware, (req, res) => {
     UserConfig.deleteMany({}).then(function(){ 
         return res.json("TODOS AS CONFIGS DELETADAS"); // Success 
     }).catch(function(error){ 
@@ -257,7 +265,7 @@ app.get("/deleteAllUsersConfigs", (req, res) => {
     }); 
 });
 
-app.get("/verifyExpiredUsers", (req, res) => {
+app.get("/api/verifyExpiredUsers", (req, res) => {
     var j = schedule.scheduleJob({hour: 12, minute: 00}, function(){
         var date = new Date()
         console.log('Iniciando Job de usuários expirados');
@@ -272,6 +280,6 @@ app.get("/verifyExpiredUsers", (req, res) => {
     });
 });
 
-app.listen(3000, () =>{
-    console.log("Servidor iniciado na porta 3000: https://localhost:3000/");
+app.listen(8085, () =>{
+    console.log("Servidor iniciado na porta 3000: https://localhost:8080/");
 });
