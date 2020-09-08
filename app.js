@@ -65,7 +65,7 @@ app.get('/robots.txt', function (req, res) {
 
 
 app.post('/authenticate', async (req, res) =>{
-    const accessKey = req.body;
+    const accessKey = req.body.accessKey;
     const user = await Users.findOne({accessKey})
 
     if(!user)
