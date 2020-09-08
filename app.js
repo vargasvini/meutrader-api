@@ -3,6 +3,8 @@ const mongoose = require('mongoose');
 const path = require('path');
 var schedule = require('node-schedule');
 
+process.env.NODE_ENV = 'production';
+
 function requireHTTPS(req, res, next) {
     if (!req.secure && req.get('x-forwarded-proto') !== 'https' && process.env.NODE_ENV !== "development") {
       return res.redirect('https://' + req.get('Host') + req.url);
@@ -68,7 +70,13 @@ app.get("/deleteAllUsers", (req, res) => {
     }); 
 });
 
-app.get("/getUsers", (req, res) => {
+app.get("/getUsers", (req, res, next) => {
+    if(1==1){
+        next() 
+    }
+    
+},
+(req, res, next) =>{
    Users.find({}).then((users) => {
         return res.json(users);
     }).catch((erro) => {
