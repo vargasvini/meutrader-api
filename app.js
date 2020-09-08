@@ -275,6 +275,6 @@ app.get("/api/verifyExpiredUsers", (req, res) => {
     });
 });
 
-app.listen(8085, () =>{
+app.listen(3000, () =>{
     console.log("Servidor iniciado na porta 3000: https://localhost:8080/");
 });
