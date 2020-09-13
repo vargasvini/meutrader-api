@@ -82,7 +82,7 @@ app.get("/banner", (req, res) => {
 
 app.get('/robots.txt', function (req, res) {
     res.type('text/plain');
-    res.send("User-agent: *\nDisallow: /api/");
+    res.send("User-agent: *\nDisallow: /api/\nDisallow: /tutorial");
 });
 
 app.post('/api/authenticate', async (req, res) =>{
