@@ -59,6 +59,10 @@ app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname+'/public/index.html'));
 });
 
+app.get("/tutorial", (req, res) => {
+    res.sendFile(path.join(__dirname+'/public/Tutorial.html'));
+});
+
 app.get("/nicepagecss", (req, res) => {
     res.sendFile(path.join(__dirname+'/public/nicepage.css'));
 });
